@@ -1,23 +1,47 @@
 var fs = require('fs');
 
-var target = ('../dracstudy');
+var target = ('../watchjits'); // todo: as an npm module, this will run on current directory
+var sourcePostsDirectory = target + '/posts/';
+var targetDirectory = target + '/dist/';
+var targetPostsDirectory = targetDirectory + 'posts/';
 
-var files = fs.readdirSync(target);
+var files = fs.readdirSync(sourcePostsDirectory);
 
-// for each txt file
 files.forEach(processSourceFiles);
+createHomePage();
 
+function createHomePage() {
+  var html = "<a target='_blank' href='posts/cummings-v-gomez-adcc-trials.html'>first post (this wont really be hardcoded)</a>";
+  fs.writeFileSync(targetDirectory + 'index.html', html);
+}
 
 function processSourceFiles(element, index, array) {
-  if (/^.*(\.txt)/.test(element)){
-    processTextFile(element);
+  console.log("processing " + element);
+  var sourcePath = sourcePostsDirectory + element;
+  var targetPath = targetPostsDirectory + element.replace(/(\.mwd)/,'.html');
+
+  if (/^.*(\.mwd)/.test(element)){
+    processMwdFile(sourcePath, targetPath);
+  }
+  if (/^.*(\.png)/.test(element)){
+    copyImage(sourcePath, targetPath);
   }
 }
 
-function processTextFile(file){
-  var sourcePath = target + '/' + file;
+function copyImage(sourcePath, targetPath){
+  fs.createReadStream(sourcePath).pipe(fs.createWriteStream(targetPath));
+}
+
+function processMwdFile(sourcePath, targetPath){
   var text = fs.readFileSync(sourcePath, {encoding:'utf8'});
-  console.log(text.replace(/^.*(\.png)/mg,'<img src=title$& />'));
-  fs.writeFileSync(target + '/dist/' + file.replace(/(\.txt)/,'.html'),
-      text.replace(/^.*(\.png)/mg,'<img src=title$& />'));
+
+  // wrap .png's in an image tag
+  text = text.replace(/^.*(\.png)/mg,'<img src=\'$&\' />');
+
+  fs.writeFileSync(targetPath, text);
+}
+
+
+function getHtmlFullPage(body){
+  return '<html><head></head><body>' + body + '</body></html>';
 }
