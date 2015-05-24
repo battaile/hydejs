@@ -1,5 +1,5 @@
 # hydejs
-Static site generator that likely will be hideous compared to Jekyll.
+Static site generator that likely will be hideous compared to Jekyll.  See the 'watchjits' repository for sample source files.
 
 Looks in /posts directory for *.mwd (mark WAY down) files
 
