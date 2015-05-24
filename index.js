@@ -1,4 +1,5 @@
 var fs = require('fs');
+var marked = require('marked');
 
 var target = ('../watchjits'); // todo: as an npm module, this will run on current directory
 var sourcePostsDirectory = target + '/posts/';
@@ -36,12 +37,12 @@ function processMwdFile(sourcePath, targetPath){
   var text = fs.readFileSync(sourcePath, {encoding:'utf8'});
 
   // wrap .png's in an image tag
-  text = text.replace(/^.*(\.png)/mg,'<img src=\'$&\' />');
-
+  text = text.replace(/^.*(\.png)/mg,'<p><img src=\'$&\' /></p>');
+  text = getHtmlFullPage(text);
   fs.writeFileSync(targetPath, text);
 }
 
-
 function getHtmlFullPage(body){
-  return '<html><head></head><body>' + body + '</body></html>';
+  return marked(body);
+  //return '<html><head></head><body>' + body + '</body></html>';
 }

@@ -14,5 +14,8 @@
     "cms"
   ],
   "author": "Battaile Fauber",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "marked": "^0.3.3"
+  }
 }
