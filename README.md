@@ -3,8 +3,8 @@ Static site generator that likely will be hideous compared to Jekyll.
 
 Looks in /posts directory for *.mwd (mark WAY down) files
 
-
 # MWD (mark WAY down)
+Supports regular markdown with the following additions:
 Any line ending in '.png' will be replaced with an img tag
 
 # header section:
