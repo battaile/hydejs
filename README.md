@@ -1,3 +1,5 @@
+# IN EARLY STAGES, NOT READY FOR PRIME TIME, DONT USE AAAAA
+
 # hydejs
 Static site generator that likely will be hideous compared to Jekyll.  See the 'watchjits' repository for sample source files.
 
