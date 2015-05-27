@@ -1,40 +1,69 @@
 var fs = require('fs');
 var marked = require('marked');
+var paths = require('./js/paths.js');
 
-var target = ('../watchjits'); // todo: as an npm module, this will run on current directory
-var sourcePostsDirectory = target + '/posts/';
-var targetDirectory = target + '/dist/';
-var targetPostsDirectory = targetDirectory + 'posts/';
+var files = fs.readdirSync(paths.sourcePostsDirectory).sort(); //todo sort by date
+copyImages();
+var posts = getPosts();
+createHomePage(posts);
+createPosts();
 
-var files = fs.readdirSync(sourcePostsDirectory).sort();
+function copyImages(){
+  var pngs = files.filter(function(x){return /^.*(\.png)/.test(x);});
 
-files.forEach(processSourceFiles);
-createHomePage();
-
-function createHomePage() {
-
-  var mwd = '';
-  var txtFiles = files.filter(function(x){return isMwd(x);});
-
-  for (var i = 0; i < txtFiles.length; i++){
-    mwd += '[' + txtFiles[i].replace(/-/g,' ').replace('.mwd','') + '](posts/' + txtFiles[i].replace(/(\.mwd)/,'.html') + ')<br/>';
+  for (var i = 0; i < pngs.length; i++){
+    copyImage(paths.sourcePostsDirectory + pngs[i], paths.targetPostsDirectory + pngs[i]);
   }
-  console.log(mwd);
-  fs.writeFileSync(targetDirectory + 'index.html', getHtmlFullPage(mwd));
 }
 
-// refactor homepage generation to work off arrays getting built when processign source files so it can access the data there
-function processSourceFiles(element, index, array) {
-  console.log("processing " + element);
-  var sourcePath = sourcePostsDirectory + element;
-  var targetPath = targetPostsDirectory + element.replace(/(\.mwd)/,'.html');
+function getPosts(){
+  var txtFiles = files.filter(function(x){return isMwd(x);});
+  var posts  = new Array(txtFiles.length);
+  for (var i = 0; i < txtFiles.length; i++){
+    posts[i] = new Post(txtFiles[i]);
+  }
+  return posts;
+}
 
-  if (isMwd(element)){
-    processMwdFile(sourcePath, targetPath);
+function Post(filename){
+  this.pagetitle = null;
+  this.date = new Date();
+  this.sourcePath = paths.sourcePostsDirectory + filename;
+  this.htmlFileName = filename.replace(/(\.mwd)/,'.html');
+  this.targetPath = paths.targetPostsDirectory + this.htmlFileName;
+  this.md = getMd(this.sourcePath);
+  this.getDefaultTitle = function(){
+    return filename.replace(/-/g,' ').replace('.mwd','');
+  };
+}
+
+//get markdown for this post
+function getMd(sourcePath){
+  var md = fs.readFileSync(sourcePath, {encoding:'utf8'});
+
+  // wrap .png's in an image tag
+  md = md.replace(/^.*(\.png)/mg,'<p><img src=\'$&\' /></p>');
+
+  return marked(md);
+//  fs.writeFileSync(targetPath, text);
+}
+
+function createPosts(){
+  var i;
+  for ( i = 0; i < posts.length; i++ ){ // convert to foreach?
+    fs.writeFileSync(posts[i].targetPath, getHtmlFullPage(posts[i].pagetitle, marked(posts[i].md)));
   }
-  if (/^.*(\.png)/.test(element)){
-    copyImage(sourcePath, targetPath);
+}
+
+function createHomePage(posts) {
+  var i, html = '', title = '';
+
+  for (i = 0; i < posts.length; i++){
+    title = posts[i].pagetitle || posts[i].getDefaultTitle();
+    html += '<a href="' + paths.postsDirectoryHtmlRelativePath + posts[i].htmlFileName + '"/>'  + title + '</a><br/>';
   }
+  console.log(html);
+  fs.writeFileSync(paths.targetDirectory + 'index.html', getHtmlFullPage("site title goes here - Home", html));
 }
 
 function isMwd(file){
@@ -47,16 +76,6 @@ function copyImage(sourcePath, targetPath){
   fs.createReadStream(sourcePath).pipe(fs.createWriteStream(targetPath));
 }
 
-function processMwdFile(sourcePath, targetPath){
-  var text = fs.readFileSync(sourcePath, {encoding:'utf8'});
-
-  // wrap .png's in an image tag
-  text = text.replace(/^.*(\.png)/mg,'<p><img src=\'$&\' /></p>');
-  text = getHtmlFullPage(text);
-  fs.writeFileSync(targetPath, text);
-}
-
-function getHtmlFullPage(body){
-  return marked(body);
-  //return '<html><head></head><body>' + body + '</body></html>';
+function getHtmlFullPage(pagetitle, body){
+  return '<html><title="'+ pagetitle +' "/><head></head><body>' + body + '</body></html>';
 }

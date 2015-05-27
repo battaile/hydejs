@@ -1,7 +1,11 @@
 # hydejs
 Static site generator that likely will be hideous compared to Jekyll.  See the 'watchjits' repository for sample source files.
 
-Looks in /posts directory for *.mwd (mark WAY down) files
+#How to Use
+Create directory/repo for project. (todo: this path is currently hardcoded, need to change this to run as watcher in the target directory)
+Create subfolder named posts.
+Add mwd (see below) and png files to posts directory.
+Run 'node index' from terminal
 
 # MWD (mark WAY down)
 Supports regular markdown with the following additions:
