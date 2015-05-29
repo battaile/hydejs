@@ -8,7 +8,7 @@ copyImages();
 var posts = getPosts();
 createHomePage(posts);
 createPosts();
-// todo - copy css
+// todo - copy css, favicon
 
 function copyImages(){
   var pngs = files.filter(function(x){return /^.*(\.png)/.test(x);});
