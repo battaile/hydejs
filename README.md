@@ -4,8 +4,8 @@
 Static site generator that likely will be hideous compared to Jekyll.  See the 'watchjits' repository for sample source files.
 
 # goals
-dead simple, just type some text and/or picture names in a text file
-looks good on mobile, or at least the (insert whatever I currently own here)
+- dead simple, just type some text and/or picture names in a text file
+- looks good on mobile, or at least the (insert whatever I currently own here)
 
 # How to Use
 Create directory/repo for project. (todo: this path is currently hardcoded, need to change this to run as watcher in the target directory)
