@@ -2,11 +2,13 @@ var fs = require('fs');
 var marked = require('marked');
 var paths = require('./js/paths.js');
 
+var masterTemplate = fs.readFileSync(paths.masterTemplate, {encoding:'utf8'});
 var files = fs.readdirSync(paths.sourcePostsDirectory).sort(); //todo sort by date
 copyImages();
 var posts = getPosts();
 createHomePage(posts);
 createPosts();
+// todo - copy css
 
 function copyImages(){
   var pngs = files.filter(function(x){return /^.*(\.png)/.test(x);});
@@ -45,7 +47,6 @@ function getMd(sourcePath){
   md = md.replace(/^.*(\.png)/mg,'<p><img src=\'$&\' /></p>');
 
   return marked(md);
-//  fs.writeFileSync(targetPath, text);
 }
 
 function createPosts(){
@@ -77,5 +78,6 @@ function copyImage(sourcePath, targetPath){
 }
 
 function getHtmlFullPage(pagetitle, body){
-  return '<html><title="'+ pagetitle +' "/><head></head><body>' + body + '</body></html>';
+  html = masterTemplate.replace(/(~~title~~)/g,pagetitle).replace(/(~~body~~)/,body);
+  return html;
 }
