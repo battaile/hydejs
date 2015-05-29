@@ -28,6 +28,7 @@ title: Eddie Cummings vs Walter Gomez, 2015 ADCC trials
 
 # stuff I'm using:
 - node - server/runtime
+- node-inspector - godsend for debugging node
 - npm - package manager
 - skeleton - css
 - atom - javascript ide (sorta)
