@@ -23,3 +23,13 @@ Must be the first non-blank lines in the document
 date: 5/23/15
 title: Eddie Cummings vs Walter Gomez, 2015 ADCC trials
 ```
+
+
+
+# stuff I'm using:
+node - server/runtime
+npm - package manager
+skeleton - css
+atom - javascript ide (sorta)
+http-server - at least initially, my preferred way of testing the output in a browser but this is going to be changing
+marked - for md-to-html conversion
