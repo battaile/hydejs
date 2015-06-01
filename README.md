@@ -11,7 +11,7 @@ Static site generator that likely will be hideous compared to Jekyll.  See the '
 - Create directory/repo for project. (todo: this path is currently hardcoded, need to change this to run as watcher in the target directory)
 - Create subfolder named posts.
 - Add mwd (see below) and png files to posts directory.
-- Run 'node index [directory path]' from terminal, eg node index.js '../watchjits';
+- Run 'node index [directory path] [site title]' from terminal, eg node index.js '../watchjits' 'Watch Jits!';
 
 # MWD (mark WAY down)
 Supports regular markdown with the following additions:

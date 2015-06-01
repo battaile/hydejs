@@ -1,7 +1,8 @@
 var fs = require('fs');
 var marked = require('marked');
 var paths = require('./js/paths.js');
-//../watchjits
+
+var siteTitle = process.argv.slice(3)[0];
  // todo: as an npm module, this will run on current directory
 
 var masterTemplate = fs.readFileSync(paths.masterTemplate, {encoding:'utf8'});
@@ -66,7 +67,7 @@ function createHomePage(posts) {
     html += '<a href="' + paths.postsDirectoryHtmlRelativePath + posts[i].htmlFileName + '"/>'  + title + '</a><br/>';
   }
   console.log(html);
-  fs.writeFileSync(paths.targetDirectory + 'index.html', getHtmlFullPage("site title goes here - Home", html));
+  fs.writeFileSync(paths.targetDirectory + 'index.html', getHtmlFullPage(siteTitle, html));
 }
 
 function isMwd(file){
