@@ -1,6 +1,8 @@
 var fs = require('fs');
 var marked = require('marked');
 var paths = require('./js/paths.js');
+//../watchjits
+ // todo: as an npm module, this will run on current directory
 
 var masterTemplate = fs.readFileSync(paths.masterTemplate, {encoding:'utf8'});
 var files = fs.readdirSync(paths.sourcePostsDirectory).sort(); //todo sort by date

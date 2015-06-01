@@ -1,4 +1,4 @@
-exports.sourceDirectory = '../watchjits'; // todo: as an npm module, this will run on current directory
+exports.sourceDirectory = process.argv.slice(2)[0];
 exports.sourcePostsDirectory = exports.sourceDirectory + '/posts/';
 exports.targetDirectory = exports.sourceDirectory + '/dist/';
 exports.targetCssDirectory = exports.targetDirectory + 'css/';

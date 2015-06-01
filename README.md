@@ -11,7 +11,7 @@ Static site generator that likely will be hideous compared to Jekyll.  See the '
 - Create directory/repo for project. (todo: this path is currently hardcoded, need to change this to run as watcher in the target directory)
 - Create subfolder named posts.
 - Add mwd (see below) and png files to posts directory.
-- Run 'node index' from terminal
+- Run 'node index [directory path]' from terminal, eg node index.js '../watchjits';
 
 # MWD (mark WAY down)
 Supports regular markdown with the following additions:
@@ -23,8 +23,6 @@ Must be the first non-blank lines in the document
 date: 5/23/15
 title: Eddie Cummings vs Walter Gomez, 2015 ADCC trials
 ```
-
-
 
 # stuff I'm using:
 - node - server/runtime
