@@ -31,12 +31,17 @@ function getPosts(){
 }
 
 function Post(filename){
-  this.pagetitle = null;
-  this.date = new Date();
+
+  this.date = /(?:date: )(.*)/.exec[0];
   this.sourcePath = paths.sourcePostsDirectory + filename;
   this.htmlFileName = filename.replace(/(\.mwd)/,'.html');
   this.targetPath = paths.targetPostsDirectory + this.htmlFileName;
   this.md = getMd(this.sourcePath);
+
+  this.pagetitle = /(?:title: )(.*)/.exec(this.md)[1];
+  console.log (this.md);
+  console.log ('pagetitle for ' + filename + ': ' + this.pagetitle);
+  this.date = /(?:date: )(.*)/.exec(this.md)[0];
   this.getDefaultTitle = function(){
     return filename.replace(/-/g,' ').replace('.mwd','');
   };
@@ -49,12 +54,12 @@ function getMd(sourcePath){
   // wrap .png's in an image tag
   md = md.replace(/^.*(\.png)/mg,'<p><img src=\'$&\' /></p>');
 
-  return marked(md);
+  return md;
 }
 
 function createPosts(){
   var i;
-  for ( i = 0; i < posts.length; i++ ){ // convert to foreach?
+  for ( i = 0; i < posts.length; i++ ){ 
     fs.writeFileSync(posts[i].targetPath, getHtmlFullPage(posts[i].pagetitle, marked(posts[i].md)));
   }
 }
@@ -66,7 +71,6 @@ function createHomePage(posts) {
     title = posts[i].pagetitle || posts[i].getDefaultTitle();
     html += '<a href="' + paths.postsDirectoryHtmlRelativePath + posts[i].htmlFileName + '"/>'  + title + '</a><br/>';
   }
-  console.log(html);
   fs.writeFileSync(paths.targetDirectory + 'index.html', getHtmlFullPage(siteTitle, html));
 }
 
